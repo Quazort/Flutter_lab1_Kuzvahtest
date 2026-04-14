@@ -1,6 +1,12 @@
 import 'dart:io';
 import 'package:todo_app/todo.dart';
 import 'package:todo_app/todo_repository.dart';
+import 'package:ansicolor/ansicolor.dart';
+
+final AnsiPen greenPen = AnsiPen()..green();
+final AnsiPen redPen = AnsiPen()..red();
+final AnsiPen bluePen = AnsiPen()..blue();
+final AnsiPen yellowPen = AnsiPen()..yellow();
 
 void main() {
   TodoRepository repo = TodoRepository();
@@ -40,20 +46,20 @@ bool handleCommand(TodoRepository repo, String input) {
         deleteCommand(repo, parts);
         break;
       case "exit":
-        print("exit");
+        print(greenPen("exit"));
         break;
       default:
         print("unknown code");
         break;
     }
   } catch (e) {
-    print("Eror: $e");
+    print(redPen("Eror: $e"));
   }
   return false;
 }
 
 void printMenu() {
-  print('Приложение ТОДО');
+  print(yellowPen('Приложение ТОДО'));
   print("Команды");
   print('add <text> - добавить задачу');
   print('list       - показать список');
