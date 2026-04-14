@@ -3,7 +3,7 @@ import 'package:todo_app/todo.dart';
 import 'package:todo_app/todo_repository.dart';
 
 void main() {
-  TodoRepository todo = TodoRepository();
+  TodoRepository repo = TodoRepository();
   printMenu();
   while (true) {
     stdout.write("> ");
@@ -22,7 +22,35 @@ void main() {
   }
 }
 
-bool handleCommand(repo, String input) {}
+bool handleCommand(TodoRepository repo, String input) {
+  List<String> parts = input.split(" ");
+  String command = parts[0].toLowerCase();
+  try {
+    switch (command) {
+      case "add":
+        addCommand(repo, input);
+        break;
+      case "list":
+        listCommand(repo);
+        break;
+      case "done":
+        doneCommand(repo, parts);
+        break;
+      case "delete":
+        deleteCommand(repo, parts);
+        break;
+      case "exit":
+        print("exit");
+        break;
+      default:
+        print("unknown code");
+        break;
+    }
+  } catch (e) {
+    print("Eror: $e");
+  }
+  return false;
+}
 
 void printMenu() {
   print('Приложение ТОДО');
@@ -55,4 +83,24 @@ void listCommand(TodoRepository repo) {
   for (var todo in todos) {
     print(todo);
   }
+}
+
+void doneCommand(TodoRepository repo, List<String> parts) {
+  if (parts.length < 2) {
+    print("Ошибка: укажите id");
+    return;
+  }
+  int id = int.parse(parts[1]);
+  repo.complete(id);
+  print("task done");
+}
+
+void deleteCommand(TodoRepository repo, List<String> parts) {
+  if (parts.length < 2) {
+    print("Ошибка: укажите id");
+    return;
+  }
+  int id = int.parse(parts[1]);
+  repo.delete(id);
+  print("task deleted");
 }
